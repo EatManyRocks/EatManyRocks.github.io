@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Assignment 1</title>
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+
+  <body>
+    <h2><a href="index.html">Return To Assignments</a></h2>
+    <hr>
+    <br>
+
+    <script type="text/javascript">
+      //Part 1
+      let person = {
+        firstName: "Bob",
+        lastName: "Bobbieson",
+        age: 30
+      };
+
+      person.hobby = "Sewing";
+      delete person.age;
+      console.log(person);
+
+      //Part 2
+      let colors = ["Red", "Green", "Blue", "Yellow", "Purple"];
+
+      colors.push("Orange");
+      colors.unshift("Black");
+      console.log(colors);
+
+      colors.pop();
+      colors.shift();
+      console.log(colors);
+
+      let selectedColors = colors.slice(1, 3);
+      console.log(selectedColors);
+
+      let additionalColors = ["White", "Pink"];
+      additionalColors = additionalColors.concat(selectedColors);
+      console.log(additionalColors);
+
+      //Part 3
+      /*
+      Multi-
+      Line
+      Comment
+      */
+
+      //Part 4
+      function reverseArray(arr) {
+        return arr.reverse();
+      }
+
+      console.log(reverseArray(colors));
+    </script>
+
+  </body>
+
+</html>

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Assignment 2</title>
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+
+  <body>
+    <h2><a href="index.html">Return To Assignments</a></h2>
+    <hr>
+    <br>
+
+    <button onclick="performUserMathOperation()">Perform Math Operation</button>
+    <h3 id="mathOperation"></h3>
+    <h4 id="numbersEvenOrOdd"></h4>
+    <h4 id="numbersComparison"></h4>
+
+
+    <script>
+      function performUserMathOperation() {
+        var result;
+        var userNum1;
+        var userNum2;
+        var userOperator;
+        while (!isFinite(userNum1)) {
+          userNum1 = Number(prompt("Enter first number:", 0));
+          if (!isFinite(userNum1)) {
+            alert("Invalid Input. Enter a number.");
+          }
+        }
+
+        while (!isFinite(userNum2)) {
+          userNum2 = Number(prompt("Enter second number:", 0));
+          if (!isFinite(userNum2)) {
+            alert("Invalid Input. Enter a number.");
+          }
+        }
+
+        var success = false;
+        while (!success) {
+          userOperator = prompt("Enter operator:", "+");
+          switch (userOperator) {
+            case "+":
+              result = userNum1 + userNum2;
+              success = true;
+              break;
+            case "-":
+              result = userNum1 - userNum2;
+              success = true;
+              break;
+            case "*":
+            case "x":
+            case "X":
+              result = userNum1 * userNum2;
+              success = true;
+              break;
+            case "/":
+              if (userNum1 == 0) {
+                let retry = confirm("Cannot divide by 0. Try a different operator?");
+                if (!retry) {
+                  document.getElementById("mathOperation").innerHTML = "ERROR - Divide by Zero";
+                  return;
+                }
+              }
+              else {
+                result = userNum1 / userNum2;
+                success = true;
+              }
+              break;
+            case "%":
+              result = userNum1 % userNum2;
+              success = true;
+              break;
+            default:
+              alert("Invalid Input. Enter a valid operator (+, -, *, /, %).");
+          }
+        }
+
+        document.getElementById("mathOperation").innerHTML = userNum1 + userOperator + userNum2 + "=" + result;
+        document.getElementById("numbersEvenOrOdd").innerHTML = userNum1 + " is " + getParity(userNum1) + " | " + userNum2 + " is " + getParity(userNum2);
+        document.getElementById("numbersComparison").innerHTML = userNum1 + getInequalitySymbol(userNum1, userNum2) + userNum2;
+      }
+
+      function isEven(num) {
+        return (num % 2 == 0);
+      }
+
+      function getParity(num) {
+        if (isEven(num)) {
+          return "even";
+        }
+        return "odd";
+      }
+
+      function getInequalitySymbol(num1, num2) {
+        if (num1 < num2) {
+          return "<";
+        }
+        if (num1 > num2) {
+          return ">";
+        }
+        return "=";
+      }
+    </script>
+
+  </body>
+
+</html>
