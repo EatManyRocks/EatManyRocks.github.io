@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+
+  <body>
+    <h2><a href="index.html">Return To Assignments</a></h2>
+    <hr>
+    <br>
+
+    <p id="multiplicationTable" style="white-space: pre-line"></p>
+
+    <script>
+      let multiplicand = getUserInputForMultiplicand();
+      let range = getUserInputForRange();
+      generateMultiplicationTable(multiplicand, range);
+
+      function getUserInputForMultiplicand() {
+        let userNum;
+        do {
+          userNum = prompt("Enter a number to be multiplied:");
+        } while (isNaN(userNum) || userNum == null)
+
+        return userNum;
+      }
+
+      function getUserInputForRange() {
+        let userNum;
+        do {
+          userNum = prompt("Enter the range for the multiplication table:");
+        } while (isNaN(userNum) || userNum <= 0)
+
+        return userNum;
+      }
+
+      function generateMultiplicationTable(number, range = 10) {
+        let sum = 0;
+        let tableString = "";
+        for (let i = 0; (i < range) && (i < 100); i++) {
+          sum = number * (i + 1);
+          tableString += number + " x " + (i + 1) + " = " + sum + "\n";
+        }
+
+        document.getElementById("multiplicationTable").innerHTML = tableString;
+      }
+    </script>
+
+  </body>
+
+</html>
