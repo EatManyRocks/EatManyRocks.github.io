@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Assignment 4</title>
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+
+  <body>
+
+    <script>
+      const contacts = [{ "name": "John Joe", "email": "johnjoe@example.com", "phone": "111-222-3333" },
+      { "name": "Dave Don", "email": "davedon@example.com", "phone": "123-123-1234" },
+      { "name": "Sal Sally", "email": "salsally@example.com", "phone": "123-456-7890" }];
+
+      let nameSearchInput = prompt("ENTER A NAME to search for a contact:");
+      nameSearchInput = nameSearchInput.toLowerCase();
+
+      for (contact of contacts) {
+        let searchNameComparison = contact.name.toLowerCase();
+        if (searchNameComparison.includes(nameSearchInput)) {
+          let index = searchNameComparison.indexOf(searchNameComparison);
+          let end = index + nameSearchInput.length;
+          let nameResult = searchNameComparison.slice(0, index)
+            + searchNameComparison.slice(index, end).toUpperCase()
+            + searchNameComparison.slice(end);
+          alert("Found result for search \"" + nameSearchInput + "\": Name: " + nameResult + ", Email: " + contact.email + ", Phone: " + contact.phone);
+        }
+      }
+
+    </script>
+
+  </body>
+
+</html>

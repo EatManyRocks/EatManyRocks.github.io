@@ -1,0 +1,108 @@
+#cardContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+.selected {
+  background-color: lightgrey;
+  transform: translateY(-10px);
+  border-width: 6px;
+}
+
+#scoreContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+}
+
+.scoreBox {
+  text-align: center;
+  justify-content: center;
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 12px;
+  padding: 12px;
+  padding-left: 18px;
+  padding-right: 18px;
+  min-width: 160px;
+}
+
+#targetScoreBox {
+  padding: 18px;
+  padding-left: 32px;
+  padding-right: 32px;
+  margin-right: 160px;
+}
+
+#currentMultAndChipBox {
+  display: flex;
+}
+
+#currentMult {
+  border-color: red;
+  border-width: 4px;
+  flex: 0 1 120px;
+  min-width: auto;
+}
+
+#currentChips {
+  border-color: blue;
+  border-width: 4px;
+  flex: 0 1 120px;
+  min-width: auto;
+}
+
+#multiplicationSymbol {
+  border-color: white;
+  min-width: auto;
+}
+
+#buttonControls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+
+#sortingButtons {
+  display: flex;
+  gap: 5px;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px;
+  border-radius: 16px;
+  padding: 16px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#handContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  padding: 50px;
+  overflow-x: auto;
+}
+
+.card {
+  border-style: solid;
+  border-color: black;
+  border-width: 2px;
+  border-radius: 12px;
+  aspect-ratio: 7/10;
+  width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  font-size: medium;
+  padding: 10px;
+  border-radius: 16px;
+}

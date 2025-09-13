@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Webaltro</title>
+    <link rel="stylesheet" href="/css/webaltro.css">
+  </head>
+
+  <body>
+    <h2><a href="index.html">Return To Assignments</a></h2>
+    <hr>
+    <br>
+
+    <div id="scoreContainer">
+      <div id="targetScoreBox" class="scoreBox">
+        <h2>Score to beat:</h2>
+        <h3 id="targetScore">0</h3>
+      </div>
+      <div class="scoreBox">
+        <h3 id="currentHandType">---</h3>
+        <div id="currentMultAndChipBox">
+          <h4 id="currentMult" class="scoreBox">0</h4>
+          <h3 id="multiplicationSymbol" class="scoreBox"> X </h3>
+          <h4 id="currentChips" class="scoreBox">0</h4>
+        </div>
+        <div>
+          <h3 style="text-decoration: underline;">Current score:</h3>
+          <h4 id="currentScore">0</h4>
+        </div>
+      </div>
+      <div class="scoreBox">
+        <h3>Total round score:</h3>
+        <h4 id="totalRoundScore">0</h4>
+      </div>
+    </div>
+
+    <div id="cardContainer">
+      <div class="card" id="deck">Deck: 46</div>
+      <div id="handContainer">Empty</div>
+    </div>
+
+    <div id="buttonControls">
+      <!-- <button id="buttonDrawNewHand">Draw New Hand</button> -->
+      <button id="buttonPlayHand">Play Hand</button>
+      <div id="sortingButtons">
+        <button id="buttonSortHandBySuit">Sort Hand by Suit</button>
+        <button id="buttonSortHandByRank">Sort Hand by Rank</button>
+      </div>
+      <button id="buttonDiscard">Discard</button>
+    </div>
+    <script src="js/webaltro.js"></script>
+  </body>
+
+</html>
