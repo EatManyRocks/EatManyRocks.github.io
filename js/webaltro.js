@@ -288,7 +288,7 @@ class Hand {
 
     alert(`
       Hand Type: ` + this.handType + ` (` + multAndChips.mult + ` mult x ` + multAndChips.chips + ` chips)
-      Cards Total: ` + cardChips + `chips
+      Cards Total: ` + cardChips + ` chips
       ` + multAndChips.mult + ` mult x ` + (multAndChips.chips + cardChips) + ` chips = ` + handScore); //remove for visuals later!!
 
     this.selectedCards = [];
@@ -308,7 +308,7 @@ class Hand {
   }
 
   discardCards() {
-    if (this.selectedCards.length == 0) {
+    if (this.selectedCards.length == 0 || this.numDiscards == 0) {
       return;
     }
 
@@ -458,7 +458,8 @@ class GameHandler {
       return;
     }
     if (playerHand.numHands <= 0) {
-      gameOver();
+      this.gameOver();
+      return;
     }
 
     updateScoreVisual(handScore, this.totalBlindScore);
@@ -470,6 +471,10 @@ class GameHandler {
 
 
   gameOver() {
+    alert(`GAME OVER!
+      Ran out of hands. 
+      Starting new game...`);
+
     this.ante = 0;
     this.blind = 0;
     this.startNextBlind();
