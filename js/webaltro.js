@@ -371,11 +371,13 @@ class Hand {
 
   sortByRank() {
     this.cards.sort((a, b) => RANKS.indexOf(b.rank) - RANKS.indexOf(a.rank));
+    this.sortedBySuit = false;
   }
 
   sortBySuit() {
     this.sortByRank();
     this.cards.sort((a, b) => Object.values(SUITS).indexOf(a.suit) - Object.values(SUITS).indexOf(b.suit));
+    this.sortedBySuit = true;
   }
 
   getCardByIndex(index = 0) {
@@ -573,6 +575,12 @@ handContainer.addEventListener("click", (event) => {
   cardDiv.classList.toggle("selected", playerHand.selectedIndexes.includes(index))
 });
 //
+
+//check deck
+// const deckContainer = document.getElementById("deck");
+// deckContainer.addEventListener("click", (event => {
+
+// }));
 
 const buttonPlayHand = document.getElementById("buttonPlayHand");
 buttonPlayHand.addEventListener("click", function () {
