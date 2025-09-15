@@ -440,10 +440,14 @@ class GameHandler {
     }
 
     this.totalBlindScore = 0;
-    playerHand.resetForNextBlind();
     playerDeck.resetForNextBlind();
+    playerHand.resetForNextBlind();
     updateBlindAndAnteVisual(this.blind, this.ante);
     updateScoreVisual(0, this.totalBlindScore, this.currentTargetBlindScore);
+
+    alert(`CURRENT ROUND:
+      Blind ` + this.blind + ` (Ante ` + this.ante + `) 
+      Score to beat: ` + this.currentTargetBlindScore);
   }
 
   handleHandPlayed() {
@@ -494,6 +498,7 @@ function renderHand(hand) {
       case SUITS.SPADE:
         cardDiv.style.borderColor = "#2D345E";
         cardDiv.style.backgroundColor = "#d8dbeeff";
+        break;
       case SUITS.DIAMOND:
         cardDiv.style.borderColor = "#F86230";
         cardDiv.style.backgroundColor = "#f6e6e1ff";
