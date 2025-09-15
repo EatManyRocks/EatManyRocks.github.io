@@ -37,23 +37,28 @@ const RANK_VALUE = {
 };
 
 const HAND_BASE_VALUES = {
-  "High Card": { chips: 5, mult: 1 },
-  "Pair": { chips: 10, mult: 2 },
-  "Two Pair": { chips: 20, mult: 2 },
-  "Three of a Kind": { chips: 30, mult: 3 },
-  "Straight": { chips: 30, mult: 4 },
-  "Flush": { chips: 35, mult: 4 },
-  "Full House": { chips: 40, mult: 4 },
-  "Four of a Kind": { chips: 60, mult: 7 },
-  "Straight Flush": { chips: 100, mult: 8 },
-  "Royal Flush": { chips: 100, mult: 8 }
+  [HAND_TYPES.HIGH_CARD]: { chips: 5, mult: 1 },
+  [HAND_TYPES.PAIR]: { chips: 10, mult: 2 },
+  [HAND_TYPES.TWO_PAIR]: { chips: 20, mult: 2 },
+  [HAND_TYPES.THREE_OF_A_KIND]: { chips: 30, mult: 3 },
+  [HAND_TYPES.STRAIGHT]: { chips: 30, mult: 4 },
+  [HAND_TYPES.FLUSH]: { chips: 35, mult: 4 },
+  [HAND_TYPES.FULL_HOUSE]: { chips: 40, mult: 4 },
+  [HAND_TYPES.FOUR_OF_A_KIND]: { chips: 60, mult: 7 },
+  [HAND_TYPES.STRAIGHT_FLUSH]: { chips: 100, mult: 8 },
+  [HAND_TYPES.ROYAL_FLUSH]: { chips: 100, mult: 8 }
 };
+
+const ANTE_BASE_SCORE = [100, 300, 800, 2000, 5000, 11000, 20000, 35000, 50000]
 
 /*****************************************************************************************/
 //CLASSES
 
 class Card {
+  static idCounter = 0;
+
   constructor(suit, rank, enhancement = null, edition = null, seal = null) {
+    this.id = Card.idCounter++;
     this.suit = suit;
     this.rank = rank;
     this.enhancement = enhancement;
@@ -112,6 +117,10 @@ class Deck {
     return drawnCard;
   }
 
+  resetForNextBlind() {
+    this.shuffle();
+  }
+
   size() {
     return this.cards.length;
   }
@@ -138,28 +147,37 @@ class Deck {
 /*****************************************************************************************/
 
 class Hand {
-  constructor(handSize = 8) {
+  constructor(deck, handSize = 8, numHands = 5, numDiscards = 3) {
+    this.deck = deck;
     this.cards = [];
     this.handSize = handSize;
-    this.currSelectedCards = [];
+    this.selectedIndexes = [];
+    this.selectedCards = [];
     this.maxSelectedCards = 5;
+    this.currHandType = null;
+    this.numHands = numHands;
+    this.baseNumHands = numHands;
+    this.numDiscards = numDiscards;
+    this.baseNumDiscards = numDiscards;
   }
 
-  draw(deck) {
+  draw() {
     let drawnCard = null;
-    if (deck && !deck.isEmpty()) {
-      drawnCard = deck.draw();
+    if (this.deck && !this.deck.isEmpty()) {
+      drawnCard = this.deck.draw();
       if (drawnCard) {
         this.cards.push(drawnCard);
       }
     }
+
+    renderHand(this);
     return drawnCard;
   }
 
-  drawFullHand(deck) {
+  drawFullHand() {
     let drawnCards = [];
     for (let i = this.cards.length; i < this.handSize; i++) {
-      let drawnCard = this.draw(deck);
+      let drawnCard = this.draw(this.deck);
       drawnCards.push(drawnCard);
     }
 
@@ -167,30 +185,30 @@ class Hand {
   }
 
   selectCard(index) {
-    let i = this.currSelectedCards.indexOf(index);
+    let i = this.selectedIndexes.indexOf(index);
     if (i !== -1) {
-      this.currSelectedCards.splice(i, 1);
-    } else if (this.currSelectedCards.length < this.maxSelectedCards) {
-      this.currSelectedCards.push(index);
+      this.selectedIndexes.splice(i, 1);
+    } else if (this.selectedIndexes.length < this.maxSelectedCards) {
+      this.selectedIndexes.push(index);
     }
 
     this.evaluateHandType();
   }
 
   evaluateHandType() {
-    const handSize = this.currSelectedCards.length;
+    const selectedCards = this.selectedIndexes.map(i => this.cards[i]);
+    this.selectedCards = selectedCards;
+    const suits = selectedCards.map(card => card.suit);
+    const ranks = selectedCards.map(card => card.rank);
+    const handSize = this.selectedIndexes.length;
     if (handSize == 0) {
-      displayHandType(null);
+      this.updateHandType(null);
       return null;
     }
     if (handSize == 1) {
-      displayHandType(HAND_TYPES.HIGH_CARD);
+      this.updateHandType(HAND_TYPES.HIGH_CARD);
       return HAND_TYPES.HIGH_CARD;
     }
-
-    const selectedCards = playerHand.currSelectedCards.map(i => playerHand.cards[i]);
-    const suits = selectedCards.map(card => card.suit);
-    const ranks = selectedCards.map(card => card.rank);
 
     let rankOccurrences = Object.values(this.countAllOccurrences(ranks));
     rankOccurrences = rankOccurrences.sort((a, b) => b - a);
@@ -224,8 +242,72 @@ class Hand {
       handType = HAND_TYPES.PAIR;
     }
 
-    displayHandType(handType);
+    this.updateHandType(handType);
     return handType;
+  }
+
+  updateHandType(handType) {
+    this.handType = handType;
+    displayHandType(handType);
+  }
+
+  playCards() {
+    if (this.selectedCards.length == 0) {
+      return;
+    }
+
+    let handScore = 0;
+    this.numHands--;
+
+    for (let card of this.selectedCards) {
+      handScore += card.getValue();
+      // let index = this.cards.indexOf(item);
+      // if (index !== -1 && this.cards[index].id === card.id) {
+      //   this.cards.splice(index, 1);
+      // }
+      this.cards = this.cards.filter(c => c.id !== card.id); //should only remove card with matching id
+      //apply effects/bonuses here
+      //play visuals
+    }
+
+    this.selectedCards = [];
+    this.selectedIndexes = [];
+    this.updateHandType(null);
+    this.drawFullHand();
+
+    //do scoring and remove cards
+
+    //win if score passes goal
+
+    if (this.numHands <= 0) {
+      //lose round
+    }
+  }
+
+  discardCards() {
+    if (this.selectedCards.length == 0) {
+      return;
+    }
+
+    this.numDiscards--;
+
+    for (let card of this.selectedCards) {
+      this.cards = this.cards.filter(c => c.id !== card.id);
+    }
+
+    this.selectedCards = [];
+    this.selectedIndexes = [];
+    this.updateHandType(null);
+    this.drawFullHand();
+  }
+
+  resetForNextBlind() {
+    this.cards = [];
+    this.selectedCards = [];
+    this.selectedIndexes = [];
+    this.numHands = this.baseNumHands;
+    this.numDiscards = this.baseNumDiscards;
+    this.updateHandType(null);
   }
 
   countAllOccurrences(array) {
@@ -252,12 +334,12 @@ class Hand {
     for (let i = 0; i < sortedRanks.length - 1; i++) {
       let currIndex = RANKS.indexOf(sortedRanks[i]);
       let nextIndex = RANKS.indexOf(sortedRanks[i + 1]);
-      if (nextIndex !== currentIndex + 1) {
+      if (nextIndex !== currIndex + 1) {
         return false;
       }
-
-      return true;
     }
+
+    return true;
   }
 
   sortByRank() {
@@ -296,8 +378,53 @@ class Hand {
   }
 }
 
+class GameHandler {
+  constructor(playerDeck, playerHand) {
+    this.ante = 0;
+    this.blind = 0;
+    this.totalBlindScore = 0;
+    this.currentTargetBlindScore = 0;
+    this.playerDeck = playerDeck;
+    this.playerHand = playerHand;
+  }
+
+  startNextAnte() {
+    this.ante++;
+  }
+
+  startNextBlind() {
+    this.blind++;
+    if (blind > 3 || blind < 1) {
+      this.startNextAnte();
+      this.currentTargetBlindScore = ANTE_BASE_SCORE[this.ante];
+      blind = 1;
+    } else if (blind == 2) {
+      this.currentTargetBlindScore = ANTE_BASE_SCORE[this.ante] * 1.5;
+    } else {
+      this.currentTargetBlindScore = ANTE_BASE_SCORE[this.ante] * 2;
+    }
+
+    playerHand.resetForNextBlind();
+  }
+
+  checkScore(handScore, numHandsRemaining) {
+    this.totalBlindScore += handScore
+    if (this.totalBlindScore >= this.currentTargetBlindScore) {
+      this.startNextBlind();
+      return;
+    }
+    if (numHandsRemaining <= 0) {
+      gameOver();
+    }
+  }
+
+  gameOver() {
+    return;
+  }
+}
+
 /*****************************************************************************************/
-//FUNCTIONS
+//FUNCTIONS (mostly visuals)
 
 function renderHand(hand) {
   const container = document.getElementById("handContainer");
@@ -335,7 +462,8 @@ function init() {
 }
 
 let playerDeck = new Deck();
-let playerHand = new Hand();
+let playerHand = new Hand(playerDeck);
+let gameProcess = new GameHandler(playerDeck, playerHand);
 
 init();
 
@@ -352,10 +480,18 @@ handContainer.addEventListener("click", (event) => {
 
   let index = cardDiv.dataset.index;
   playerHand.selectCard(index);
-  cardDiv.classList.toggle("selected", playerHand.currSelectedCards.includes(index))
+  cardDiv.classList.toggle("selected", playerHand.selectedIndexes.includes(index))
 });
 //
 
+const buttonPlayHand = document.getElementById("buttonPlayHand");
+buttonPlayHand.addEventListener("click", function () {
+  playerHand.playCards();
+});
+const buttonDiscard = document.getElementById("buttonDiscard");
+buttonDiscard.addEventListener("click", function () {
+  playerHand.discardCards();
+});
 const buttonSortHandBySuit = document.getElementById("buttonSortHandBySuit");
 buttonSortHandBySuit.addEventListener("click", function () {
   playerHand.sortBySuit();
