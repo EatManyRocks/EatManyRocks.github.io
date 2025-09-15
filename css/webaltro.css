@@ -92,13 +92,15 @@
 .card {
   border-style: solid;
   border-color: black;
-  border-width: 2px;
+  border-width: 4px;
   border-radius: 12px;
   aspect-ratio: 7/10;
   width: 120px;
+  min-width: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: large;
 }
 
 button {

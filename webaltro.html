@@ -14,8 +14,20 @@
 
     <div id="scoreContainer">
       <div id="targetScoreBox" class="scoreBox">
-        <h2>Score to beat:</h2>
-        <h3 id="targetScore">0</h3>
+        <div>
+          <h1 style="text-decoration: underline;">Score to beat:</h1>
+          <h2 id="targetScore">0</h2>
+        </div>
+        <div style="display: flex;">
+          <div class="scoreBox" style="min-width: 60px">
+            <h3 style="text-decoration: underline;">Blind</h3>
+            <h4 id="blind">0</h4>
+          </div>
+          <div class="scoreBox" style="min-width: 60px">
+            <h3 style="text-decoration: underline;">Ante</h3>
+            <h4 id="ante">0</h4>
+          </div>
+        </div>
       </div>
       <div class="scoreBox">
         <h3 id="currentHandType">---</h3>
@@ -25,13 +37,25 @@
           <h4 id="currentChips" class="scoreBox">0</h4>
         </div>
         <div>
-          <h3 style="text-decoration: underline;">Current score:</h3>
-          <h4 id="currentScore">0</h4>
+          <h3 style="text-decoration: underline;">Previous hand score:</h3>
+          <h4 id="previousHandScore">0</h4>
         </div>
       </div>
-      <div class="scoreBox">
-        <h3>Total blind score:</h3>
-        <h4 id="totalBlindScore">0</h4>
+      <div>
+        <div class="scoreBox" style="display: flex;">
+          <div class="scoreBox" style="min-width: 60px">
+            <h3 style="text-decoration: underline;">Hands</h3>
+            <h4 id="hands">0</h4>
+          </div>
+          <div class="scoreBox" style="min-width: 60px">
+            <h3 style="text-decoration: underline;">Discards</h3>
+            <h4 id="discards">0</h4>
+          </div>
+        </div>
+        <div class="scoreBox">
+          <h2 style="text-decoration: underline;">Total blind score:</h2>
+          <h3 id="totalBlindScore">0</h3>
+        </div>
       </div>
     </div>
 
