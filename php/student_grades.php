@@ -43,7 +43,7 @@ foreach (array_keys($studentScores) as $student) {
   $studentGrades[$student] = $grade; //stores students with their average and letter grade
 }
 
-array_multisort(array_column($studentGrades, "average"), SORT_DESC, $studentGrades); //sorts by value of average in array
+array_multisort(array_column($studentGrades, "average"), SORT_DESC, $studentGrades); //sorts by value of average in 2D array
 echo "Student Grades:\n";
 echo "----------------------------------------\n";
 foreach (array_keys($studentGrades) as $student) {
